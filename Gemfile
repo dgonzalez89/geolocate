@@ -14,13 +14,17 @@ gem "sqlite3", "~> 1.4"
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", ">= 5.0"
 
-gem 'ipstack'
+gem 'geocoder'
 gem 'pg'
 gem 'rspec'
 gem 'date'
 gem 'annotations'
 gem 'pry'
 gem "haml-rails"
+gem 'resolv'
+gem 'dotenv'
+gem 'redis'
+gem 'uri'
 
 # Use JavaScript with ESM import maps [https://github.com/rails/importmap-rails]
 gem "importmap-rails"
