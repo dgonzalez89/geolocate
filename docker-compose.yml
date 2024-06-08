@@ -1,0 +1,26 @@
+services:
+  api:
+    
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - /app
+    environment:
+      DATABASE_HOST: db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: geolocation
+      GEOLOCATION_PROVIDER_API_KEY: 9b92ae94a01490
+
+  db:
+    image: postgres
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: geolocation
+
+volumes:
+  db_data:

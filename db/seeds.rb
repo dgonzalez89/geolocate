@@ -7,3 +7,23 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
+
+
+Location.create!([{
+  ip_address: "192.168.0.1",
+  country: "Panama",
+  timezone: "America/Panama",
+  city: 'Panama'
+},
+{
+    ip_address: "192.168.0.2",
+    country: "Costa Rica",
+    timezone: "America/Costa Rica",
+    city: 'San Jose'
+},
+{
+    ip_address: "192.168.0.3",
+    country: "United States",
+    timezone: "America/US",
+    city: 'Miami'
+}])
