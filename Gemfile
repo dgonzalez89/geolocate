@@ -17,6 +17,7 @@ gem "puma", ">= 5.0"
 gem 'geocoder'
 gem 'pg'
 gem 'rspec'
+gem 'rspec-rails'
 gem 'date'
 gem 'annotations'
 gem 'pry'
@@ -25,6 +26,7 @@ gem 'resolv'
 gem 'dotenv'
 gem 'redis'
 gem 'uri'
+gem "factory_bot_rails"
 
 # Use JavaScript with ESM import maps [https://github.com/rails/importmap-rails]
 gem "importmap-rails"

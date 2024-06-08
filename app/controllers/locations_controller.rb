@@ -8,23 +8,25 @@ class LocationsController < ApplicationController
     end
 
     def show
-        ip_address = parse_ip_address
-        url = parse_url
-
-        if !!(ip_address || url || geolocation_params[:id])
-            location = Location.find_by(id: geolocation_params[:id])
+        if params[:id]
+            location = Location.find_by(id: params[:id])
             unless location
-                result = geocoder_client(ip_address, url).call
-                location = Location.find_by(ip_address: result['ip_address']) if result
+                ip_address = parse_ip_address
+                url = parse_url
+
+                if(ip_address || url)
+                    result = geocoder_client(ip_address, url).call
+                    location = Location.find_by(ip_address: result['ip_address']) if result
+                end
             end
 
             if location
                 render json: location.to_json, status: :ok
             else
-                data_not_found
+                render json: { "message": data_not_found }, status: 500
             end
         else
-            invalid_params_message 
+            render json: { "message": invalid_params_message }, status: 400
         end
     end
 
@@ -39,9 +41,10 @@ class LocationsController < ApplicationController
                 render json: result.to_json, status: :created 
             else
                 location_not_found
+                render json: { "message": location_not_found }, status: 500
             end
         else
-            invalid_params_message
+            render json: { "message": invalid_params_message }, status: 400
         end
     end
 
@@ -49,8 +52,8 @@ class LocationsController < ApplicationController
         ip_address = parse_ip_address
         url = parse_url
 
-        if !!(ip_address || url || geolocation_params[:id])
-            location = Location.find_by(id: geolocation_params[:id])
+        if !!(ip_address || url || params[:id])
+            location = Location.find_by(id: params[:id])
             unless location
               result = geocoder_client(ip_address, url).call
               location = Location.find_by(ip_address: result['ip_address']).destroy if result
@@ -61,10 +64,10 @@ class LocationsController < ApplicationController
                 location.destroy
                 render json: {ip_address: deleted_ip_address}.to_json, status: :ok
             else
-                data_not_found
+                render json: { "message": data_not_found }, status: 500
             end
         else
-            invalid_params_message 
+            render json: { "message": invalid_params_message }, status: 400 
         end
     end
 
@@ -75,30 +78,31 @@ class LocationsController < ApplicationController
     end
 
     def parse_ip_address
-        return nil unless geolocation_params[:ip_address]
+        return nil unless geolocation_params && geolocation_params[:ip_address]
 
         geolocation_params[:ip_address] =~ Resolv::IPv4::Regex ? geolocation_params[:ip_address] : nil
     end
 
     def parse_url
-        return nil unless geolocation_params[:url]
+        return nil unless geolocation_params && geolocation_params[:url]
 
         geolocation_params[:url] =~ URI::regexp ? geolocation_params[:url] : nil
     end
 
     def geolocation_params
-      params.permit(:ip_address, :url, :id)
+      params.require(:location).permit(:ip_address, :url)
+    rescue ActionController::ParameterMissing
     end
 
     def invalid_params_message
-        render json: { "message": GeolocationHandling::Error::InvalidParameters.new.message }, status: 400
+        GeolocationHandling::Error::InvalidParameters.new.message
     end
 
     def location_not_found
-        render json: { "message": GeolocationHandling::Error::LocationNotFound.new.message }, status: 500
+        GeolocationHandling::Error::LocationNotFound.new.message
     end
 
     def data_not_found
-        render json: { "message": GeolocationHandling::Error::DataNotFound.new.message }, status: 500
+        GeolocationHandling::Error::DataNotFound.new.message
     end
 end
