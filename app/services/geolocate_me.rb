@@ -10,12 +10,13 @@ module GeolocateMe
             return parseData(Geocoder.search(@ip_address).first.data)
           elsif @url
             begin
-                host = URI.parse(@url).host
-                ip_from_url = Resolv.getaddress host
-                return parseData(Geocoder.search(ip_from_url).first.data)
-            rescue Resolv::ResolvError
+              host = URI.parse(@url).host
+              ip_from_url = Resolv.getaddress host
+              parseData(Geocoder.search(ip_from_url).first.data)
             end
           end
+        rescue Resolv::ResolvError
+          raise GeolocationHandling::Error::DataNotFound.new
         end
 
         private

@@ -4,7 +4,6 @@ default: &default
   pool: 5
   variables:
     statement_timeout: 5000
-  host: db
   username: postgres
   password: postgres
   database: geolocation
@@ -14,7 +13,7 @@ development:
 
 test:
   <<: *default
-  database: postgres_test
+  database: geolocation_test
 
 production:
   <<: *default

@@ -21,7 +21,7 @@ describe 'Locations API', type: :request do
        get "/locations/#{id}", params: params
     end
     let(:params) {{}}
-    let(:id) { '1' } 
+    let(:id) { location.id } 
 
     before do
       allow(GeolocateMe::FetchData).to receive(:new).and_return(stub_location)
@@ -77,7 +77,7 @@ describe 'Locations API', type: :request do
 
   describe 'DELETE /locations/:id' do
     it 'deletes a specific location' do
-      delete '/locations/1'
+      delete "/locations/#{location.id}"
       expect(response).to have_http_status(:ok)
       expect(JSON.parse(response.body)['ip_address']).to eq( '192.168.0.1' )
     end
