@@ -4,9 +4,10 @@ default: &default
   pool: 5
   variables:
     statement_timeout: 5000
-  username: postgres
-  password: postgres
-  database: geolocation
+  username: <%= ENV.fetch('POSTGRES_USER') %>
+  password: <%= ENV.fetch('POSTGRES_PASSWORD') %>
+  database: <%= ENV.fetch('POSTGRES_DB') %>
+  host: <%= ENV.fetch('DATABASE_HOST') %>
 
 development:
   <<: *default
@@ -15,6 +16,6 @@ test:
   <<: *default
   database: geolocation_test
 
+
 production:
   <<: *default
-  host: db
