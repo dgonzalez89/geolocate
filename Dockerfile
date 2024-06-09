@@ -12,7 +12,10 @@ ENV RAILS_ENV="production" \
     BUNDLE_DEPLOYMENT="1" \
     BUNDLE_PATH="/usr/local/bundle" \
     BUNDLE_WITHOUT="development" \
-    DATABASE_HOST="db"
+    DATABASE_HOST="db" \
+    POSTGRES_USER="postgres" \
+    POSTGRES_PASSWORD="posgres" \
+    POSTGRES_DB="geolocation"
 
 # Throw-away build stage to reduce size of final image
 FROM base as build

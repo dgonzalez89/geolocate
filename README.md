@@ -1,24 +1,18 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Geolocation API: Takes JSON body and searches for ip address if not present tries the same with url.
 
 Things you may want to cover:
 
-* Ruby version asdsadas
+* 1- Build Image
+> docker-compose build
 
-* System dependencies
 
-* Configuration
+* 2- Run Image
+> docker-compose run
 
-* Database creation
+* 3- Run Tests
+> docker-compose exec api bin/rails spec
 
-* Database initialization
+### How to use the API via Postman
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
