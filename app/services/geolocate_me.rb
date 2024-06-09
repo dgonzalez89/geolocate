@@ -6,15 +6,14 @@ module GeolocateMe
         end
 
         def call
-          if @ip_address
-            return parseData(Geocoder.search(@ip_address).first.data)
-          elsif @url
-            begin
+          result = nil
+          result = parseData(Geocoder.search(@ip_address).first.data) if @ip_address
+          if result.nil? && @url
               host = URI.parse(@url).host
               ip_from_url = Resolv.getaddress host
-              parseData(Geocoder.search(ip_from_url).first.data)
-            end
+              result = parseData(Geocoder.search(ip_from_url).first.data)
           end
+          result
         rescue Resolv::ResolvError
           raise GeolocationHandling::Error::DataNotFound.new
         end

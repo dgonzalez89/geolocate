@@ -15,10 +15,7 @@ class LocationsController < ApplicationController
             ip_address = parse_ip_address
             url = parse_url
 
-            if(ip_address || url)
-                result = geocoder_client(ip_address, url).call
-                location = Location.find_by(ip_address: result['ip_address']) if result
-            end
+            location = geocoder_client(ip_address, url).call if(ip_address || url)
         end
 
         raise data_not_found unless location
@@ -42,22 +39,22 @@ class LocationsController < ApplicationController
     end
 
     def destroy
-        ip_address = parse_ip_address
-        url = parse_url
-
-        raise invalid_params unless (ip_address || url || params[:id])
-
-        location = Location.find_by(id: params[:id])
+        location = Location.find_by(id: params[:id]) if params[:id]
+        
         unless location
+            ip_address = parse_ip_address
+            url = parse_url
+            raise invalid_params unless (ip_address || url || params[:id])
+            
             result = geocoder_client(ip_address, url).call
-            location = Location.find_by(ip_address: result['ip_address']).destroy if result
+            location = Location.find_by(ip_address: result['ip_address']) if result
         end
 
         raise data_not_found unless location
 
-        deleted_ip_address = location.ip_address
+        deleted_location = location
         location.destroy
-        render json: {ip_address: deleted_ip_address}.to_json, status: :ok
+        render json: deleted_location.to_json, status: :ok
     rescue => e
         render_error(e)
     end

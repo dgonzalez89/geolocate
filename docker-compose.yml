@@ -20,6 +20,6 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: geolocation
-
+      
 volumes:
   db_data:
