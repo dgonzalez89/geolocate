@@ -25,6 +25,8 @@ Things you may want to cover:
 ### Geocoder
 > - Using the geocoder gem we can change as easy as changing two configuration lines the **GEOLOCATION_PROVIDER_API_KEY** env var with the api of the selected service and the geocoder initializer setting  **ip_lookup** currently using the **ipinfo_io** service.
 
+> - My ip info api key is available for local testing on the docker-compose.yml file under **GEOLOCATION_PROVIDER_API_KEY**
+
 ### API Endpoints
 >   - **create** `POST /locations`
 >   - **show** `GET /locations/$ID` Also receives JSON body with ip address and/or url 
